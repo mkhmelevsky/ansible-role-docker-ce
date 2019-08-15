@@ -1,0 +1,88 @@
+---
+# file: tasks/setup-RedHat-7.yml
+
+- name: Install
+  become: True
+  block:
+    - name: Install prerequisities packages
+      yum:
+        name: "{{ docker_ce_prerequisities }}"
+        state: present
+      register: task_result
+      retries: 3
+      delay: 2
+      until: task_result is succeeded
+
+    - name: Add Docker repository
+      shell: "yum-config-manager --add-repo {{ docker_ce_repo_url }}"
+      register: task_result
+      retries: 3
+      delay: 2
+      until: task_result is succeeded
+
+    - name: Install Docker-CE packages
+      yum:
+        name: "{{ docker_ce_packages }}"
+        state: present
+      register: task_result
+      retries: 3
+      delay: 2
+      until: task_result is succeeded
+
+    - name: Create directory for Docker config if it does not exist
+      file:
+        path: /etc/docker/
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Copy Docker-daemon config file
+      template:
+        backup: yes
+        owner: root
+        group: root
+        mode: 0644
+        src: 'daemon.json.j2'
+        dest: '/etc/docker/daemon.json'
+      register: task_result
+      retries: 3
+      delay: 2
+      until: task_result is succeeded
+
+    - name: Enable and start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+      register: task_result
+      retries: 3
+      delay: 2
+      until: task_result is succeeded
+
+    - name: Get latest docker-compose version from GitHub
+      shell: 'git ls-remote https://github.com/docker/compose | grep refs/tags | grep -oP "[0-9]+\.[0-9][0-9]+\.[0-9]+$" | tail -n 1'
+      register: docker_ce_compose_version
+      retries: 3
+      delay: 2
+      until: docker_ce_compose_version is succeeded
+
+    - name: Download docker-compose from GitHub.com
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/{{ docker_ce_compose_version.stdout }}/docker-compose-{{ ansible_system }}-{{ ansible_machine }}"
+        dest: /usr/bin/docker-compose
+        mode: 0755
+        owner: root
+        group: root
+      register: task_result
+      retries: 3
+      delay: 2
+      until: task_result is succeeded
+
+    - name: Make symbolic link to /usr/local/bin
+      file:
+        path: /usr/local/bin/docker-compose
+        src: /usr/bin/docker-compose
+        state: link
+
+...

@@ -1,0 +1,14 @@
+---
+# vars file for ansible-role-docker-ce
+
+docker_ce_prerequisities:
+  - yum-utils
+  - device-mapper-persistent-data
+  - lvm2
+
+docker_ce_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+
+docker_ce_repo_url: 'https://download.docker.com/linux/centos/docker-ce.repo'

@@ -1,0 +1,26 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: "git2u"
+  author: "Max Khmelevsky <max.khmelevsky@yandex.ru>"
+  description: This Ansible role is intended to install Git2U on RHEL/CentOS 7 host
+  company: ""
+
+  license: MIT
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+    - name: CentOS
+      versions:
+        - 7
+
+
+  galaxy_tags:
+    - git1u
+
+  min_ansible_version: 2.8
+
+...

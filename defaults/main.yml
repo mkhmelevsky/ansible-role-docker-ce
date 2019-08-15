@@ -1,0 +1,4 @@
+---
+# defaults file for ansible-role-docker-ce
+
+docker_ce_address_prefix: '10.10.10.1/24'
