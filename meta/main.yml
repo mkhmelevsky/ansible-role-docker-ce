@@ -4,7 +4,7 @@ dependencies: []
 galaxy_info:
   role_name: "git2u"
   author: "Max Khmelevsky <max.khmelevsky@yandex.ru>"
-  description: This Ansible role is intended to install Git2U on RHEL/CentOS 7 host
+  description: This Ansible role is intended to install Docker-CE on RHEL/CentOS 7 host
   company: ""
 
   license: MIT
