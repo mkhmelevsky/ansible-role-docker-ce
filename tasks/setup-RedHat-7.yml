@@ -50,6 +50,21 @@
       delay: 2
       until: task_result is succeeded
 
+    # Turn off swapiness and overcommit
+    # https://success.docker.com/article/node-using-swap-memory-instead-of-host-memory
+    - name: Set vm.swappiness=0 and vm.overcommit_memory=1
+      shell: "sysctl vm.swappiness=0 && sysctl vm.overcommit_memory=1 && [[ $(sysctl vm.swappiness | awk '{print $3}') == 0 && $(sysctl vm.overcommit_memory | awk '{print $3}') == 1 ]]"
+
+    - name: Make sysctl params permanent
+      copy:
+        src: "{{ role_path }}/files/98-docker-swap.conf"
+        dest: /etc/sysctl.d/
+        mode: '0644'
+      register: task_result
+      retries: 3
+      delay: 2
+      until: task_result is succeeded
+
     - name: Enable and start Docker service
       service:
         name: docker

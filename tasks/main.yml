@@ -18,6 +18,6 @@
     - "not-supported.yml"
   loop_control:
     loop_var: platform
-  tags: [ install_packages ]
+  tags: [ install-docker ]
 
 ...
