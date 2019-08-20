@@ -2,3 +2,8 @@
 # defaults file for ansible-role-docker-ce
 
 docker_ce_address_prefix: '10.10.10.1/24'
+
+# Docker storage
+docker_ce_storage_setup: no
+docker_ce_storage_block_device: '/dev/sdb'
+docker_ce_storage_volume_group: 'docker-vg'

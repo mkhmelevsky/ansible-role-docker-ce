@@ -1,0 +1,25 @@
+---
+# file: tasks/docker-storage.yml
+
+- name: Privileged partitioning tasks
+  become: True
+  block:
+    - name: Install container-storage-setup
+      yum:
+        name: container-storage-setup
+        state: present
+      register: task_result
+      retries: 3
+      delay: 2
+      until: task_result is succeeded
+
+    - name: Render config file for container-storage-setup
+      template:
+        src: docker-storage-setup.j2
+        dest: /etc/sysconfig/docker-storage-setup
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Apply container-storage-setup
+      command: "container-storage-setup"

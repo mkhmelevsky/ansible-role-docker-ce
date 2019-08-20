@@ -20,4 +20,9 @@
     loop_var: platform
   tags: [ install-docker ]
 
+- name: Setting up LVM volume space for Docker
+  include_tasks: "docker-storage.yml"
+  when: docker_ce_storage_setup
+  tags: [ setup-storage ]
+
 ...

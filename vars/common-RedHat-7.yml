@@ -2,9 +2,9 @@
 # vars file for ansible-role-docker-ce
 
 docker_ce_prerequisities:
-  - yum-utils
   - device-mapper-persistent-data
   - lvm2
+  - yum-utils
 
 docker_ce_packages:
   - docker-ce

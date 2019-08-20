@@ -1,0 +1,12 @@
+#
+# {{ ansible_managed }}
+#
+
+DEVS={{ docker_ce_storage_block_device }}
+VG={{ docker_ce_storage_volume_group }}
+DATA_SIZE=60%FREE
+WIPE_SIGNATURES=true
+
+#
+# For a full set of possible options look at
+# /usr/share/container-storage-setup/container-storage-setup
